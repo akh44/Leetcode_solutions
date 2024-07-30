@@ -3,16 +3,25 @@ class Solution {
 
           if (needle.isEmpty()) {
             return 0;
-        }
-        
+        } 
         int n = haystack.length();
         int m = needle.length();
         
-        for (int i = 0; i <= n - m; i++) {
-            if (haystack.substring(i, i + m).equals(needle)) {
-                return i;
+        for (int ws=0;ws<=n-m;ws++) 
+        {
+          for(int i=0;i<m;i++)
+          {
+            if(needle.charAt(i)!=haystack.charAt(ws+i))
+            {
+                break;
             }
+            if(i==m-1)
+            {
+                return ws;
+            }
+          }
         }
+           
         return -1;
 
     }
