@@ -15,20 +15,17 @@
  */
 class Solution {
     public TreeNode invertTree(TreeNode root) {
-        
-        if (root == null) {
-            return null;
+        if (root == null) return null;
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            TreeNode current = queue.poll();
+            TreeNode temp = current.left;
+            current.left = current.right;
+            current.right = temp;
+            if (current.left != null) queue.add(current.left);
+            if (current.right != null) queue.add(current.right);
         }
-        
-        // Swap left and right children
-        TreeNode temp = root.left;
-        root.left = root.right;
-        root.right = temp;
-        
-        // Recursively invert the left and right subtrees
-        invertTree(root.left);
-        invertTree(root.right);
-        
         return root;
     }
 }
