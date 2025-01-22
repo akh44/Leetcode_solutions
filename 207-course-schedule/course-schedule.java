@@ -1,42 +1,39 @@
 class Solution {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-       List<List<Integer>> adjList = new ArrayList<>();
-        int[] inDegree = new int[numCourses];
-        
+       int[] indegree = new int[numCourses];
+        List<List<Integer>> adj = new ArrayList<>(numCourses);
+
         for (int i = 0; i < numCourses; i++) {
-            adjList.add(new ArrayList<>());
+            adj.add(new ArrayList<>());
         }
-        
-        for (int[] prereq : prerequisites) {
-            int course = prereq[0];
-            int prereqCourse = prereq[1];
-            adjList.get(prereqCourse).add(course);
-            inDegree[course]++;
+
+        for (int[] prerequisite : prerequisites) {
+            adj.get(prerequisite[1]).add(prerequisite[0]);
+            indegree[prerequisite[0]]++;
         }
-        
-        // Step 2: Initialize queue with courses having in-degree 0
+
         Queue<Integer> queue = new LinkedList<>();
+        // Push all the nodes with indegree zero in the queue.
         for (int i = 0; i < numCourses; i++) {
-            if (inDegree[i] == 0) {
-                queue.add(i);
+            if (indegree[i] == 0) {
+                queue.offer(i);
             }
         }
-        
-        // Step 3: Process nodes in topological order
-        int completedCourses = 0;
+
+        int nodesVisited = 0;
         while (!queue.isEmpty()) {
-            int course = queue.poll();
-            completedCourses++;
-            
-            for (int nextCourse : adjList.get(course)) {
-                inDegree[nextCourse]--;
-                if (inDegree[nextCourse] == 0) {
-                    queue.add(nextCourse);
+            int node = queue.poll();
+            nodesVisited++;
+
+            for (int neighbor : adj.get(node)) {
+                // Delete the edge "node -> neighbor".
+                indegree[neighbor]--;
+                if (indegree[neighbor] == 0) {
+                    queue.offer(neighbor);
                 }
             }
         }
-        
-        // Step 4: Check if all courses are completed
-        return completedCourses == numCourses;
+
+        return nodesVisited == numCourses;
     }
 }
