@@ -1,20 +1,20 @@
 class Solution {
     public boolean isPalindrome(String s) {
-              // Remove non-alphanumeric characters and convert to lowercase
-        s = s.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
-        
-        int i = 0;
-        int j = s.length() - 1;
-
-        // Compare characters from both ends towards the center
-        while (i < j) {
-            if (s.charAt(i) != s.charAt(j)) {
-                return false; // Mismatch found
+     for (int i = 0, j = s.length() - 1; i < j; i++, j--) {
+            while (i < j && !Character.isLetterOrDigit(s.charAt(i))) {
+                i++;
             }
-            i++;
-            j--;
+            while (i < j && !Character.isLetterOrDigit(s.charAt(j))) {
+                j--;
+            }
+
+            if (
+                Character.toLowerCase(s.charAt(i)) !=
+                Character.toLowerCase(s.charAt(j))
+            ) return false;
         }
-        return true; // No mismatches found
+
+        return true;
          
     }
 }
